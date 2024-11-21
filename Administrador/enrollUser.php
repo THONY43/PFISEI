@@ -7,21 +7,34 @@ verificarRol('administrador');
 
 $stid = isset($_GET['stid']) ? $_GET['stid'] : null;
 $type = isset($_GET['type']) ? $_GET['type'] : null;
-
-
-
-
 $msg = "";
+
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $msg = actualizarEstudiante(
-        $stid,
-        $_POST['fullanme'],
-        $_POST['rollid'],
-        $_POST['emailid'],
-        $_POST['gender'],
-        $_POST['dob'],
-        $_POST['status']
-    );
+
+    if (isset($_POST['user_type'])) {
+        $user_type = $_POST['user_type'];
+
+        if ($user_type === 'estudiante') {
+            $msg = inscribirEstudiante(
+                $stid,
+                $carrera = $_POST['carrera'],
+                $nivel = $_POST['nivel'],
+                $paralelo = $_POST['paralelo']
+            );
+        } elseif ($user_type === 'docente') {
+            $msg = inscribirDocente(
+                $stid,
+                $carrera = $_POST['carrera'],
+                $materia = $_POST['materia'],
+                $curso = $_POST['curso']
+            );
+        } else {
+            $msg = "Tipo de usuario no reconocido.";
+        }
+    } else {
+        $msg = "No se ha enviado el tipo de usuario.";
+    }
 }
 ?>
 
@@ -83,6 +96,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                             if (strtolower($type) === "estudiante") {
                                     ?>
                                                 <form class="form-horizontal" method="post">
+
+                                                    <input type="hidden" name="user_type" value="estudiante">
                                                     <div class="form-group">
                                                         <label for="nombre" class="col-sm-2 control-label">Nombres</label>
                                                         <div class="col-sm-10">
@@ -141,18 +156,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                             </select>
                                                         </div>
                                                     </div>
-                                                 
+
 
                                                     <div class="form-group">
                                                         <label for="paralelo" class="col-sm-2 control-label">Paralelo</label>
                                                         <div class="col-sm-4">
-                                                            <select name="paralelo" class="form-control" id="paralelo" required="required" >
+                                                            <select name="paralelo" class="form-control" id="paralelo" required="required">
                                                                 <option value="A">Paralelo A</option>
                                                                 <option value="B">Paralelo B</option>
                                                             </select>
                                                         </div>
-                                                       
-                                                      
+
+
                                                     </div>
 
 
@@ -170,14 +185,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         $materias = $results['materias2'];
                                         $carreras = $results['carreras2'];
                                         $cursos = $results['cursos2'];
+
+                                        $result = $results['query_result2'][0];
                                         ?>
                                         <form class="form-horizontal" method="post">
+                                            <input type="hidden" name="user_type" value="docente">
 
                                             <div class="form-group">
                                                 <label for="nombre_docente" class="col-sm-2 control-label">Nombre Docente</label>
                                                 <div class="col-sm-10">
                                                     <input type="text" name="nombre_docente" class="form-control" id="nombre_docente"
-                                                        value="<?php echo htmlentities($result->nombre); ?>" required="required" autocomplete="off">
+                                                        value="<?php echo htmlentities($result['nombre']); ?>" readonly>
                                                 </div>
                                             </div>
 
@@ -185,20 +203,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                 <label for="apellido_docente" class="col-sm-2 control-label">Apellido Docente</label>
                                                 <div class="col-sm-10">
                                                     <input type="text" name="apellido_docente" class="form-control" id="apellido_docente"
-                                                        value="<?php echo htmlentities($result->apellido); ?>" required="required" autocomplete="off">
+                                                        value="<?php echo htmlentities($result['apellido']); ?>" readonly>
                                                 </div>
                                             </div>
-
                                             <div class="form-group">
-                                                <label for="materia" class="col-sm-2 control-label">Materia</label>
+                                                <label for="apellido_docente" class="col-sm-2 control-label">Cedula Docente</label>
                                                 <div class="col-sm-10">
-                                                    <select name="materia" class="form-control" id="materia" required="required">
-                                                        <?php foreach ($materias2 as $materia) { ?>
-                                                            <option value="<?php echo $materia['id_materia']; ?>" <?php echo $result['id_materia'] == $materia['id_materia'] ? 'selected' : ''; ?>>
-                                                                <?php echo $materia['nombre']; ?>
-                                                            </option>
-                                                        <?php } ?>
-                                                    </select>
+                                                    <input type="text" name="apellido_docente" class="form-control" id="apellido_docente"
+                                                        value="<?php echo htmlentities($result['cedula']); ?>" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="panel-heading">
+                                                <div class="panel-title">
+                                                    <h5>Información Académica</h5>
                                                 </div>
                                             </div>
 
@@ -206,7 +223,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                 <label for="carrera" class="col-sm-2 control-label">Carrera</label>
                                                 <div class="col-sm-10">
                                                     <select name="carrera" class="form-control" id="carrera" required="required">
-                                                        <?php foreach ($carreras2 as $carrera) { ?>
+                                                        <?php foreach ($carreras as $carrera) { ?>
                                                             <option value="<?php echo $carrera['id_carrera']; ?>" <?php echo $result['id_carrera'] == $carrera['id_carrera'] ? 'selected' : ''; ?>>
                                                                 <?php echo $carrera['nombre_carrera']; ?>
                                                             </option>
@@ -216,11 +233,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                             </div>
 
                                             <div class="form-group">
+                                                <label for="materia" class="col-sm-2 control-label">Materia</label>
+                                                <div class="col-sm-10">
+                                                    <select name="materia" class="form-control" id="materia">
+                                                        <?php foreach ($materias as $materia) { ?>
+                                                            <option value="<?php echo $materia['id_materia']; ?>" <?php echo $result['id_materia'] == $materia['id_materia'] ? 'selected' : ''; ?>>
+                                                                <?php echo $materia['nombre']; ?>
+
+                                                            </option>
+                                                        <?php } ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="form-group">
                                                 <label for="curso" class="col-sm-2 control-label">Curso</label>
                                                 <div class="col-sm-10">
                                                     <select name="curso" class="form-control" id="curso" required="required">
-                                                        <?php foreach ($cursos2 as $curso) { ?>
-                                                            <option value="<?php echo $curso['id_curso']; ?>" <?php echo $result['id_curso'] == $curso['id_curso'] ? 'selected' : ''; ?>>
+                                                        <?php foreach ($cursos as $curso) { ?>
+                                                            <option value="<?php echo $curso['id_curso']; ?>"
+                                                                <?php echo $result['id_curso'] == $curso['id_curso'] ? 'selected' : ''; ?>>
                                                                 <?php echo $curso['nivel'] . ' - ' . $curso['paralelo']; ?>
                                                             </option>
                                                         <?php } ?>
@@ -228,12 +261,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                 </div>
                                             </div>
 
-                                            <div class="form-group">
-                                                <label for="fecha_registro" class="col-sm-2 control-label">Fecha de Registro</label>
-                                                <div class="col-sm-10">
-                                                    <input type="text" name="fecha_registro" class="form-control" id="fecha_registro" value="<?php echo htmlentities($result['fecha_inscripcion']); ?>" readonly>
-                                                </div>
-                                            </div>
 
                                             <div class="form-group">
                                                 <div class="col-sm-offset-2 col-sm-10">

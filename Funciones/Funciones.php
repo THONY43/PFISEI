@@ -34,6 +34,7 @@ function actualizarEstudiante($stid, $studentname, $roolid, $studentemail, $gend
 }
 
 
+
 // Funciones.php
 function verificarRol($rolRequerido)
 {
@@ -177,17 +178,17 @@ function obtenerUsuarioPorId($stid, $type)
         } else if (strtolower($type) === "docente") {
             $sql = "SELECT 
                         p.cedula, p.telefono, p.id_profesor, 
-                        u.id_usuario, u.nombre, u.apellido, u.correo, 
+                        u.id_usuario, u.nombre, u.apellido, u.correo, u.created_at,
                         rm.id_curso, rm.id_materia, rm.id_profesor, 
                         c.id_curso, c.nivel, c.paralelo, c.id_carrera, 
                         ca.id_carrera, ca.nombre_carrera, 
                         m.id_materia, m.nombre AS nombre_materia
                     FROM tbl_profesores p
-                    JOIN tbl_usuarios u ON p.id_profesor = u.id_usuario
-                    JOIN tbl_relacionmaterias rm ON p.id_profesor = rm.id_profesor
-                    JOIN tbl_cursos c ON rm.id_curso = c.id_curso
-                    JOIN tbl_carreras ca ON c.id_carrera = ca.id_carrera
-                    JOIN tbl_materias m ON rm.id_materia = m.id_materia
+                    LEFT JOIN tbl_usuarios u ON p.id_profesor = u.id_usuario
+                    LEFT JOIN tbl_relacionmaterias rm ON p.id_profesor = rm.id_profesor
+                    LEFT JOIN tbl_cursos c ON rm.id_curso = c.id_curso
+                    LEFT JOIN tbl_carreras ca ON c.id_carrera = ca.id_carrera
+                    LEFT JOIN tbl_materias m ON rm.id_materia = m.id_materia
                     WHERE p.id_profesor = :stid";
 
             $query = $con->prepare($sql);
@@ -307,3 +308,42 @@ function insertarUsuario($tipo, $nombres, $apellidos, $cedula, $email, $telefono
         return false;
     }
 }
+
+
+//INSCRIBIR DOCENTE 
+
+function inscribirDocente($stid,$carrera,$idmateria,$idcurso){
+global $con;
+$facultad=22;
+$id_profesor = substr($stid, -2);
+$id_curso = substr($idcurso, -2);
+$id_materia = substr($idmateria, -2);
+$id_cursoMateria=$facultad.$id_profesor.$id_curso.$id_materia;
+try {
+    $sql = "INSERT INTO tbl_relacionmaterias(id_curso_materia,id_curso,id_materia,id_profesor)
+    Values ($id_cursoMateria,$idcurso,$idmateria,$stid)";
+     $stmt = $con->prepare($sql);
+     
+     if (!$stmt->execute()) {
+        return "Inscripcion de Docente Agregada Correctamente";
+    }
+} catch (PDOException $e) {
+    return "Error: " . $e->getMessage();
+}
+}
+
+
+
+function inscribirEstudiante($stid,$carrera,$nivel,$paralelo){
+global $con;
+$facultad=22;
+try {
+
+    
+   $sql="INSERT INTO tbl_inscripciones";
+    return "Inscripcion de Docente Agregada Correctamente";
+} catch (PDOException $e) {
+    return "Error: " . $e->getMessage();
+}
+}
+

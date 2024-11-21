@@ -9,7 +9,6 @@ $msg = "";
 $stid = isset($_GET['stid']) ? $_GET['stid'] : null;
 $type = isset($_GET['type']) ? $_GET['type'] : null;
 
-// Luego sigue el proceso de validación, similar al anterior
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

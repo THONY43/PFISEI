@@ -8,7 +8,6 @@ if (isset($_GET['stid'])) {
     $result = eliminarUsuario($user_id);
 
     if ($result) {
-        
         header("Location: deleteUser.php?msg=Usuario eliminado con éxito");
     } else {
      

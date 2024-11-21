@@ -22,7 +22,14 @@ echo "Bienvenido, $userName";
     <script src="../assets/js/DataTables/datatables.min.js"></script>
 </head>
 <body>
-    
+   
+            <div class= "mensajeFacultad">
+                <h4>
+                Facultad de Ingeniería en Sistemas, Electrónica e Industrial
+                </h4>
+            </div>
+            
+  
 </body>
 </html>
 
