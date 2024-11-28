@@ -490,13 +490,35 @@ margin-bottom: 5px;
   
 }
 
-/* pruebas*/
-.mensajeFacultad {
-  
-  width: 40%;
-  margin: 0 auto;
-  margin-top: 20px;
+.textoFacultad{
+  width: 100%;
+  padding: 15px;
+  margin-left: 200px;
+  font-weight: bold;
+  align-items: Center;
+  font-size: x-large;
+  font-family: Arial, Helvetica, sans-serif;
 }
+
+
+
+
+.fondo-dashboard{
+  width: 90%;
+  height: 75%;
+  background-color: rgb(251, 251, 251); /* Color de fondo */
+  border-radius: 10px;
+  box-shadow: 1px 4px 8px rgba(0, 0, 0, 0.063);
+  margin: 0 auto;
+  padding: 8px;
+}
+
+.texto-sub{
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: bold;
+  font-size: large;
+}
+
 
 
 .textoXD{
@@ -504,4 +526,16 @@ margin-bottom: 5px;
 width: 58%;
 margin: 0 auto;
 
+}
+.contenido{
+  padding: 20px;
+ 
+}
+.bienvenida{
+  padding-top: -25px;
+  font-size: 20px;
+  margin: 15px;
+}
+.texto-sub{
+  margin-left: 15px ;
 }

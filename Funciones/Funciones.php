@@ -347,3 +347,16 @@ try {
 }
 }
 
+
+function buscarCarreras (){
+    global $con;
+    try{
+        $sql="SELECT *  FROM tbl_carreras";
+        $query = $con->prepare($sql);
+        $query->execute();
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }catch (PDOException $e) {
+
+    }
+}
+

@@ -32,7 +32,7 @@ $userName = $_SESSION['user_name'];
             <div class="columna1">
                 <a class="dashboard-stat bg-general" href="manage-students.php">
                     <?php
-                    $sql = "SELECT id_estudiante from tbl_estudiantes ";
+                    $sql = "SELECT id_usuario from tbl_usuarios ";
                     $query = $con->prepare($sql);
                     $query->execute();
                     $totalstudents = $query->rowCount();
@@ -41,7 +41,7 @@ $userName = $_SESSION['user_name'];
                     <span class="name">Estudiantes Registrados</span>
                 </a>
             </div>
-
+        
             <div class="columna2">
                 <a class="dashboard-stat bg-general" href="manage-subjects.php">
                     <?php

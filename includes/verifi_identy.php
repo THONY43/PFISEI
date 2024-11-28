@@ -26,7 +26,7 @@ if (isset($_GET['code'])) {
         $usuario = explode('@', $email)[0];  // Parte del correo antes de @
 
         // Verificar el rol basado en la estructura del usuario
-        if ($usuario === 'apunina1845') {
+        if ($usuario === 'apunina1844') {
             // Caso 1: Administrador
             $_SESSION['role'] = 'administrador';
             header('Location: ../Administrador/dashboard.php');
