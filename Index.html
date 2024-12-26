@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Invitaciones</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        .form-container {
+            margin-bottom: 20px;
+        }
+        .card {
+            width: 60%;
+            margin: 20px auto;
+            padding: 20px;
+            border: 2px solid #333;
+            border-radius: 10px;
+            background: #f9f9f9;
+        }
+        .card h1 {
+            color: #e63946;
+        }
+        .card p {
+            font-size: 1.2em;
+        }
+        .button {
+            padding: 10px 20px;
+            margin-top: 10px;
+            background-color: #457b9d;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #1d3557;
+        }
+    </style>
+</head>
+<body>
+    <h1>Generador de Invitaciones</h1>
+
+    <div class="form-container">
+        <label for="name">Nombre del Invitado:</label><br>
+        <input type="text" id="name" placeholder="Escribe el nombre"><br><br>
+
+        <label for="date">Fecha:</label><br>
+        <input type="date" id="date"><br><br>
+
+        <label for="time">Hora:</label><br>
+        <input type="time" id="time"><br><br>
+
+        <label for="place">Lugar:</label><br>
+        <input type="text" id="place" placeholder="Escribe el lugar"><br><br>
+
+        <button class="button" onclick="generateInvitation()">Generar Invitación</button>
+    </div>
+
+    <div id="invitation" class="card" style="display: none;">
+        <h1>🎭 ¡Estás Invitado/a! 🎭</h1>
+        <p><strong>Nombre:</strong> <span id="guestName"></span></p>
+        <p><strong>Fecha:</strong> <span id="guestDate"></span></p>
+        <p><strong>Hora:</strong> <span id="guestTime"></span></p>
+        <p><strong>Lugar:</strong> <span id="guestPlace"></span></p>
+        <p>¡Te esperamos para disfrutar de <strong>El Juego del Calamar 2</strong> juntos!</p>
+    </div>
+
+    <script>
+        function generateInvitation() {
+            const name = document.getElementById('name').value;
+            const date = document.getElementById('date').value;
+            const time = document.getElementById('time').value;
+            const place = document.getElementById('place').value;
+
+            if (name && date && time && place) {
+                document.getElementById('guestName').innerText = name;
+                document.getElementById('guestDate').innerText = date;
+                document.getElementById('guestTime').innerText = time;
+                document.getElementById('guestPlace').innerText = place;
+                document.getElementById('invitation').style.display = 'block';
+            } else {
+                alert('Por favor, completa todos los campos.');
+            }
+        }
+    </script>
+</body>
+</html>
